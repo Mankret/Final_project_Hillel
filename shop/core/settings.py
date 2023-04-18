@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-xupmy(aan2#h6q_(8&rw44p3j2f_(9+y9!%62+z#4ykj3&k#9u
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]', 'localhost:80', 'localhost:8000', 'shop', '*']
 
 
 # Application definition
@@ -118,7 +118,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Kiev'
 
 USE_I18N = True
 
@@ -134,3 +134,17 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CELERY_BROKER_URL = 'amqp://rabbitmq:5672/'
+CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
+# CELERY_ACCEPT_CONTENT = ['json']
+# CELERY_TASK_SERIALIZER = 'json'
+# CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = TIME_ZONE
+
+# RABBITMQ_USER = 'rabbitmq_admin'
+# RABBITMQ_PASSWORD = 'rabbitmq_admin'
+RABBITMQ_HOST = 'rabbitmq'
+RABBITMQ_PORT = 5672
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"

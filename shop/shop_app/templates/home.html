@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<h1>Book</h1>
+{% if book_list %}
+  <ul>
+    {% for book in book_list %}
+    <li>
+      <a href="{{ book.get_absolute_url }}">{{book.title}}</a>
+    </li>
+    {% endfor %}
+  </ul>
+{% else %}
+    Book will be added soon
+{% endif %}
+  <button type="button" class="btn btn-primary">Buy</button>
+{% endblock %}

@@ -2,7 +2,7 @@ FROM python:3.10-alpine
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
-#ENV PYTHONPATH=/app:/app/shop:/app/warehouse
+
 
 RUN apk update \
     && apk add postgresql-dev gcc python3-dev musl-dev \
@@ -16,7 +16,7 @@ COPY ./docker/warehouse/runserver.sh /home/user/app/docker/runserver.sh
 COPY ./docker/warehouse/entrypoint.sh /home/user/app/docker/entrypoint.sh
 WORKDIR /home/user/app
 
-
+ENV PYTHONPATH=/home/user/app
 
 RUN chmod +x /home/user/app/docker/runserver.sh /home/user/app/docker/entrypoint.sh
 

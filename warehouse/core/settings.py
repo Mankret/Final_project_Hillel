@@ -25,7 +25,8 @@ SECRET_KEY = 'django-insecure-k9i-y6e=9jq2x7=1qxsspc=1b*dy-2a(i6c08xoqz8@qprz6xe
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]', 'localhost:81']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]', 'localhost:81', 'localhost:8001', 'warehouse',
+                 'warehouse:8001', '*']
 
 
 # Application definition
@@ -138,3 +139,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 4
+}

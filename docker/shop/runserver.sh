@@ -1,5 +1,8 @@
 #!/bin/bash/env sh
 
+echo "Make Migrations"
+python manage.py makemigrations --noinput
+
 echo "Migrations"
 python manage.py migrate --noinput
 

@@ -2,12 +2,12 @@ version: '3.11'
 
 services:
 
-  shop_web:
+  shop:
     build:
       context: .
       dockerfile: docker/shop/Dockerfile
     image: shop:0.0.1-dev
-    container_name: shop_web
+    container_name: shop
     command: sh /home/user/app/docker/runserver.sh
     env_file:
       - shop/.env
@@ -26,12 +26,12 @@ services:
 
 
 
-  warehouse_web:
+  warehouse:
     build:
       context: .
       dockerfile: docker/warehouse/Dockerfile
     image: warehouse:0.0.1-dev
-    container_name: warehouse_web
+    container_name: warehouse
     command: sh /home/user/app/docker/runserver.sh
     env_file:
       - warehouse/.env
@@ -91,8 +91,8 @@ services:
       - 80:80
       - 81:81
     depends_on:
-      - shop_web
-      - warehouse_web
+      - shop
+      - warehouse
     healthcheck:
       test: [ "CMD-SHELL", "ps ax", "|" ,"grep -v grep", "|" ,"grep nginx",  "||", "exit 1" ]
       interval: 30s
@@ -111,7 +111,41 @@ services:
      - nginx_network
      - web_network
 
+  redis:
+    image: redis:7.0-alpine
+    container_name: redis
+    expose:
+      - "6379"
+    networks:
+      - shop_warehouse_network
 
+  rabbitmq:
+    image: rabbitmq:3.9-alpine
+    container_name: rabbitmq
+    expose:
+      - "5672"
+    networks:
+      - shop_warehouse_network
+
+
+
+  celery:
+    build:
+      context: .
+      dockerfile: docker/shop/Dockerfile
+    container_name: celery
+    command: celery -A core worker --loglevel=info
+#    environment:
+#      CELERY_BROKER_URL: 'amqp://rabbitmq_admin:rabbitmq_admin@rabbitmq:5672/'
+#      CELERY_RESULT_BACKEND: 'redis://redis:6379/0'
+#    volumes:
+#      - ./shop:/home/user/app
+    depends_on:
+      - redis
+      - rabbitmq
+      - shop
+    networks:
+      - shop_warehouse_network
 
 networks:
   nginx_network:
